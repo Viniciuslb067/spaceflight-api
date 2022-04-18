@@ -33,7 +33,7 @@ export class ArticlesController {
       return response.json(articles);
 
     } catch (err) {
-      return response.status(400).json({ error: "Erro ao criar artigo!" });
+      return response.status(400).json(err);
     }
   }
 
@@ -49,17 +49,20 @@ export class ArticlesController {
   
       return response.json(articles);
     } catch (err) {
-      return response.status(400).json({ error: "Erro ao listar artigo!" });
+      return response.status(400).json(err);
     }
   }
 
   async list(_: Request, response: Response) {
     try {
-      const articles = await prismaClient.articles.findMany();
+      const articles = await prismaClient.articles.findMany({
+        skip: 0,
+        take: 10,
+      });
 
       return response.json(articles);
     } catch (err) {
-      return response.status(400).json({ error: "Erro ao listar artigos!" });
+      return response.status(400).json(err);
     }
   }
 
@@ -78,7 +81,7 @@ export class ArticlesController {
       return response.json(article);
 
     } catch (err) {
-      return response.status(400).json({ error: "Erro ao atualizar artigo!" });
+      return response.status(400).json(err);
     }
   }
 
@@ -91,7 +94,7 @@ export class ArticlesController {
       return response.json({ message: 'Artigo removido com sucesso!' });
 
     } catch (err) {
-      return response.status(400).json({ error: "Erro ao excluir artigo!" });
+      return response.status(400).json(err);
     }
   }
 

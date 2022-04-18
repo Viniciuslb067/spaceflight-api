@@ -7,7 +7,7 @@ services:
     env_file:
       - .env
     ports:
-      - '${API_PORT}:${API_PORT}'
+      - '${PORT}:${PORT}'
     volumes:
       -  ./src:/usr/app/src
       - ./.env:/usr/app/.env
