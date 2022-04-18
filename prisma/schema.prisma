@@ -38,7 +38,7 @@ model Articles {
   newsSite    String
   imageUrl    String
   publishedAt String
-  updatedAt   String
+  updatedAt   String?
   launches    Launches[]
   events      Events[]
 
