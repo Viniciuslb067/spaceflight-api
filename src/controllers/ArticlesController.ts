@@ -40,10 +40,12 @@ export class ArticlesController {
   async findById(request: Request, response: Response) {
     const { id } = request.params;
 
+    const idFormated = parseInt(id);
+
     try {
       const articles = await prismaClient.articles.findFirst({
         where: {
-          id,
+          id: idFormated,
         },
       });
   
@@ -68,12 +70,14 @@ export class ArticlesController {
 
   async update(request: Request, response: Response) {
     const { id } = request.params;
+    const idFormated = parseInt(id);
+
     const newArticle = request.body;
 
     try {
       const article = await prismaClient.articles.update({
         where: {
-          id
+          id: idFormated,
         },
         data: newArticle
       })
@@ -87,9 +91,9 @@ export class ArticlesController {
 
   async remove(request: Request, response: Response) {
     const { id } = request.params;
-
+    const idFormated = parseInt(id);
     try {
-      await prismaClient.articles.delete({ where: { id } })
+      await prismaClient.articles.delete({ where: { id: idFormated } })
 
       return response.json({ message: 'Artigo removido com sucesso!' });
 
