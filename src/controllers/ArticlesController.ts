@@ -23,8 +23,16 @@ export class ArticlesController {
           newsSite, 
           summary, 
           url, 
-          events, 
-          launches,
+          events: {
+            createMany: {
+              data: events,
+            },
+          }, 
+          launches: {
+            createMany: {
+              data: launches,
+            },
+          },
           imageUrl,
           publishedAt
         }
@@ -33,6 +41,7 @@ export class ArticlesController {
       return response.json(articles);
 
     } catch (err) {
+      console.log(err)
       return response.status(400).json(err);
     }
   }

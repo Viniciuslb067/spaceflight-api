@@ -14,7 +14,7 @@ datasource db {
 model Launches {
   id         String    @id @default(uuid())
   provider   String
-  Articles   Articles? @relation(fields: [articlesId], references: [id])
+  Articles   Articles? @relation(fields: [articlesId], references: [id], onDelete: Cascade)
   articlesId Int?
 
   @@map("launches")
@@ -23,7 +23,7 @@ model Launches {
 model Events {
   id         String    @id @default(uuid())
   provider   String
-  Articles   Articles? @relation(fields: [articlesId], references: [id])
+  Articles   Articles? @relation(fields: [articlesId], references: [id], onDelete: Cascade)
   articlesId Int?
 
   @@map("events")
