@@ -12,29 +12,27 @@ export class ArticlesController {
       events, 
       launches, 
       imageUrl, 
-      publishedAt  
     } = request.body;  
 
     try {
       const articles = await prismaClient.articles.create({
         data: {
           title, 
-          featured, 
+          featured: featured || false, 
           newsSite, 
           summary, 
           url, 
           events: {
             createMany: {
-              data: events,
+              data: events || [],
             },
           }, 
           launches: {
             createMany: {
-              data: launches,
+              data: launches || [],
             },
           },
           imageUrl,
-          publishedAt
         }
       })
 
@@ -64,11 +62,21 @@ export class ArticlesController {
     }
   }
 
-  async list(_: Request, response: Response) {
+  async list(request: Request, response: Response) {
+    const query = request.query;
+
     try {
       const articles = await prismaClient.articles.findMany({
-        skip: 0,
-        take: 10,
+        where: {
+          OR: [
+            {
+              title: {
+                startsWith: query.title as string,
+                mode: 'insensitive',
+              }
+            },
+          ]
+        }
       });
 
       return response.json(articles);
