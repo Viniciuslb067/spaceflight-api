@@ -37,7 +37,7 @@ model Articles {
   featured    Boolean
   newsSite    String
   imageUrl    String
-  publishedAt DateTime   @default(now())
+  publishedAt DateTime?  @default(now())
   updatedAt   String?
   launches    Launches[]
   events      Events[]

@@ -25,7 +25,7 @@ CREATE TABLE "articles" (
     "featured" BOOLEAN NOT NULL,
     "newsSite" TEXT NOT NULL,
     "imageUrl" TEXT NOT NULL,
-    "publishedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "publishedAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TEXT,
 
     CONSTRAINT "articles_pkey" PRIMARY KEY ("id")
