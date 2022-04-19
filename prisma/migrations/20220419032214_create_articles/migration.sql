@@ -25,14 +25,14 @@ CREATE TABLE "articles" (
     "featured" BOOLEAN NOT NULL,
     "newsSite" TEXT NOT NULL,
     "imageUrl" TEXT NOT NULL,
-    "publishedAt" TEXT NOT NULL,
+    "publishedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TEXT,
 
     CONSTRAINT "articles_pkey" PRIMARY KEY ("id")
 );
 
 -- AddForeignKey
-ALTER TABLE "launches" ADD CONSTRAINT "launches_articlesId_fkey" FOREIGN KEY ("articlesId") REFERENCES "articles"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "launches" ADD CONSTRAINT "launches_articlesId_fkey" FOREIGN KEY ("articlesId") REFERENCES "articles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "events" ADD CONSTRAINT "events_articlesId_fkey" FOREIGN KEY ("articlesId") REFERENCES "articles"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "events" ADD CONSTRAINT "events_articlesId_fkey" FOREIGN KEY ("articlesId") REFERENCES "articles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
