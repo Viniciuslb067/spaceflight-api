@@ -14,6 +14,12 @@ export class ArticlesController {
       imageUrl,
     } = request.body;
 
+    if (!title) return response.status(400).json({ error: "Título é obrigatório" });
+    if (!newsSite) return response.status(400).json({ error: "Site news é obrigatório" });
+    if (!summary) return response.status(400).json({ error: "Sumário é obrigatório" });
+    if (!url) return response.status(400).json({ error: "Url é obrigatório" });
+    if (!imageUrl) return response.status(400).json({ error: "Url da imagem é obrigatório" });
+
     try {
       const articles = await prismaClient.articles.create({
         data: {
@@ -22,6 +28,7 @@ export class ArticlesController {
           newsSite,
           summary,
           url,
+          imageUrl,
           events: {
             createMany: {
               data: events || [],
@@ -32,14 +39,13 @@ export class ArticlesController {
               data: launches || [],
             },
           },
-          imageUrl,
-        },
+  },
       });
 
       return response.json(articles);
     } catch (err) {
       console.log(err);
-      return response.status(400).json(err);
+      return response.status(400).json({ error: "Não foi possível criar o artigo" });
     }
   }
 
@@ -81,7 +87,8 @@ export class ArticlesController {
 
       return response.json(articles);
     } catch (err) {
-      return response.status(400).json("Não foi possível listar os artigos");
+      console.log(err)
+      return response.status(400).json({ error: "Não foi possível listar os artigos" });
     }
   }
 
@@ -101,7 +108,7 @@ export class ArticlesController {
 
       return response.json(article);
     } catch (err) {
-      return response.status(400).json(err);
+      return response.status(400).json({  error: "Não foi possível atualizar o artigo" });
     }
   }
 
@@ -113,7 +120,7 @@ export class ArticlesController {
 
       return response.json({ message: "Artigo removido com sucesso!" });
     } catch (err) {
-      return response.status(400).json(err);
+      return response.status(400).json({ error: "Não foi possível remover o artigo" });
     }
   }
 }
