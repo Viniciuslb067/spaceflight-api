@@ -44,7 +44,7 @@ export class ArticlesController {
 
       return response.json(articles);
     } catch (err) {
-      console.log(err);
+     
       return response.status(400).json({ error: "Não foi possível criar o artigo" });
     }
   }
@@ -87,7 +87,7 @@ export class ArticlesController {
 
       return response.json(articles);
     } catch (err) {
-      console.log(err)
+
       return response.status(400).json({ error: "Não foi possível listar os artigos" });
     }
   }
