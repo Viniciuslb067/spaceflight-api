@@ -1,45 +1,44 @@
 import { Request, Response } from "express";
-import { prismaClient } from '../database/prismaClient';
+import { prismaClient } from "../database/prismaClient";
 
 export class ArticlesController {
   async create(request: Request, response: Response) {
-    const { 
-      title, 
-      featured, 
-      newsSite, 
-      summary, 
-      url, 
-      events, 
-      launches, 
-      imageUrl, 
-    } = request.body;  
+    const {
+      title,
+      featured,
+      newsSite,
+      summary,
+      url,
+      events,
+      launches,
+      imageUrl,
+    } = request.body;
 
     try {
       const articles = await prismaClient.articles.create({
         data: {
-          title, 
-          featured: featured || false, 
-          newsSite, 
-          summary, 
-          url, 
+          title,
+          featured: featured || false,
+          newsSite,
+          summary,
+          url,
           events: {
             createMany: {
               data: events || [],
             },
-          }, 
+          },
           launches: {
             createMany: {
               data: launches || [],
             },
           },
           imageUrl,
-        }
-      })
+        },
+      });
 
       return response.json(articles);
-
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return response.status(400).json(err);
     }
   }
@@ -55,7 +54,7 @@ export class ArticlesController {
           id: idFormated,
         },
       });
-  
+
       return response.json(articles);
     } catch (err) {
       return response.status(400).json(err);
@@ -63,25 +62,26 @@ export class ArticlesController {
   }
 
   async list(request: Request, response: Response) {
-    const query = request.query;
+    const { title, order_by, take, skip } = request.query;
 
     try {
       const articles = await prismaClient.articles.findMany({
         where: {
-          OR: [
-            {
-              title: {
-                startsWith: query.title as string,
-                mode: 'insensitive',
-              }
-            },
-          ]
-        }
+          title: {
+            startsWith: title as string,
+            mode: "insensitive",
+          },
+        },
+        orderBy: {
+          publishedAt: order_by?.toString().trim() as any,
+        },
+        take: parseInt(take as string) || 10,
+        skip: parseInt(skip as string) || 0,
       });
 
       return response.json(articles);
     } catch (err) {
-      return response.status(400).json(err);
+      return response.status(400).json("Não foi possível listar os artigos");
     }
   }
 
@@ -96,11 +96,10 @@ export class ArticlesController {
         where: {
           id: idFormated,
         },
-        data: newArticle
-      })
+        data: newArticle,
+      });
 
       return response.json(article);
-
     } catch (err) {
       return response.status(400).json(err);
     }
@@ -110,13 +109,11 @@ export class ArticlesController {
     const { id } = request.params;
     const idFormated = parseInt(id);
     try {
-      await prismaClient.articles.delete({ where: { id: idFormated } })
+      await prismaClient.articles.delete({ where: { id: idFormated } });
 
-      return response.json({ message: 'Artigo removido com sucesso!' });
-
+      return response.json({ message: "Artigo removido com sucesso!" });
     } catch (err) {
       return response.status(400).json(err);
     }
   }
-
 }
